@@ -8,3 +8,9 @@ These are the demo files from the NCEAS tutorial
 2. Mussels
     + *Mytilus californianus*
     + *Mytilus galloprovincialis*
+    
+Now I am working from RStudio on my CHart laptop
+
+3. Cockles
+    + *Clinocardium nutellii*
+    
