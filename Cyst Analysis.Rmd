@@ -1,0 +1,56 @@
+---
+title: "Alexandrium Cysts"
+author: "Courtney Hart"
+date: "11/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Marine toxicity events can be the result of natural harmful algal blooms (HABs) that occur when phytoplankton populations grow exponentially as a result of changing oceanographic conditions. Paralytic shellfish toxin (PST) is a marine seafood-associated biotoxin produced by a family of dinoflagellates including Alexandrium catanella. These phytoplankton produce a suite of 26 potent neurotoxins known as saxitoxins (STX) that are transferred through the food web where they can accumulate in organisms and contaminate a wide variety of subsistence and commercial.
+
+The complex life cycle of Alexandrium, which alternates between a dormant, benthic stage, and a motile vegetative cell is critically important in the continuous and seasonal nature of bloom dynamics (Anderson et al., 2005). Cells emerging from the benthic cyst stage regulate Alexandrium bloom dynamics and establish patterns of shellfish toxicity. Cyst “seedbeds” are often closely associated with sites where PSP has historically occurred [30,33,34] and establishment of self-seeding cyst populations likely plays a significant role in governing patterns of shellfish toxicity in Southeast Alaska. Mapping Alexandrium cyst populations in the southern region of Southeast Alaska may help to identify geoduck clam harvest areas at high risk of exposure to PSTs.
+
+# Project Goals
+Our overall objective is to develop a coarse cyst distribution map to assess the relationship between relative benthic cyst abundances and harvest areas associated with elevated geoduck clam toxicity. Mapping relative quantities of cysts will help us to identify both spatial and temporal trends in cyst-densities and how those relate to spatial and temporal trends in toxicity of geoduck harvest areas. 
+
+# Analysis
+
+Import data
+```{r, results = "hide"}
+cyst <- read.csv("Cysts.csv")
+summary(cyst)
+```
+
+# Results
+
+### Histogram of cyst counts for all harvest areas
+
+```{r}
+C <- cyst$Cysts
+A <- cyst$Harvestarea
+
+hist(C)
+```
+
+Data is not normally distribution so try using log transformation
+
+### Histogram of log-transformed cyst counts for all harvest areas
+```{r}
+logC <- log(C)
+hist(logC)
+```
+
+### Try making a ggplot version of the histogram and sort by Harvest Area - Not working
+```{r}
+library(ggplot2)
+c2 <- ggplot(cyst, aes(Season,log(C))) + geom_point() + facet_wrap(~Harvestarea)
+c2
+```
+
+
+
