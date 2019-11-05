@@ -7,4 +7,4 @@ These are the demo files from the NCEAS tutorial
     + *Saxidomus gigantea*
 2. Mussels
     + *Mytilus californianus*
-    + *Mytilus galloprovincialis
+    + *Mytilus galloprovincialis*
