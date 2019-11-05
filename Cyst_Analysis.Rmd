@@ -48,7 +48,7 @@ hist(logC)
 ### Try making a ggplot version of the histogram and sort by Harvest Area - Not working
 ```{r}
 library(ggplot2)
-c2 <- ggplot(cyst, aes(Season,log(C))) + geom_point() + facet_wrap(~Harvestarea)
+c2 <- ggplot(cyst, aes(log(C))) + geom_histogram() + facet_wrap(~Harvestarea)
 c2
 ```
 
