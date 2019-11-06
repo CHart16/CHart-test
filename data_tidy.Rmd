@@ -87,7 +87,6 @@ head(catch_long)
 catch_wide <- catch_long %>% 
   pivot_wider(names_from = Year,
               values_from = count)
-head(catch_wide)
 ```
 
 'rename' count column to 'catch_thousands'
