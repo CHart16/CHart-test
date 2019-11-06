@@ -1,0 +1,89 @@
+---
+title: "Untitled"
+author: "Courtney Hart"
+date: "11/6/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Library Chunk - there are warnings associated with these libraries but we set warning = F & message = F so that they don't show up. It is always important to read them first. 
+```{r, warning = F, message = F}
+library(dplyr)
+library(tidyr)
+```
+
+# Read and Clean Data
+
+Read in Data - url must be in quotes
+```{r}
+catch_original <- read.csv("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1", 
+                           stringsAsFactors = FALSE)
+
+head(catch_original)
+```
+
+Remove 'all' column and 'notes' column from original data becasue we won't be doing any analysis on them. 
+```{r}
+catch_data <- catch_original %>% 
+  # select(Region, Year, Chinook, Sockeye, Coho, Pink, Chum) - too tedious, remove data you don't want instead of choosing hte column you do want.
+  select(-All, -notesRegCode)
+
+head(catch_data)
+```
+
+Piping: %<% (control-shift-M)
+Instead of using 2 operations:
+  df_filtered <- filter(df, ...)
+  df_selected <- select(df_filtered, ...)
+Use the pipe operator:
+  df_cleaned <- df %>% 
+              filter(...) %>%
+              select(...)
+This is more efficient beacuse R doesn't have to write to memory all the intermediate steps, makes code more readible, 
+
+Review Data to see if it is reasonable - look at chinook column
+```{r}
+summary(catch_data)
+```
+
+## Fix Chinook Column
+
+Use 'mutate' function to fix chinook column
+
+```{r}
+catch_clean <- catch_data %>% 
+  mutate(Chinook = ifelse(Chinook == "I", 1, Chinook)) %>% 
+  mutate(Chinook = as.numeric(Chinook))
+
+summary(catch_clean)
+```
+
+Investigate where NAs come from - Find that row
+```{r}
+i <- which(is.na(catch_clean$Chinook))
+i
+  # there is one row [401] that has a problem
+```
+
+look at the 401 row - check out above chunks for changes
+```{r}
+catch_original[i, ]
+```
+
+# Reshape Data
+
+```{r}
+catch_long <- catch_clean %>% 
+  pivot_longer(cols = -c(Region, Year),
+               names_to = "species", 
+               values_to = "count")
+head(catch_long)
+```
+
+# Summarize Data
+
+# Joins to Region table
+
