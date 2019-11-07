@@ -38,3 +38,4 @@ rsconnect/
 # data folder
 data/
 salmon figure.png
+.Rproj.user
