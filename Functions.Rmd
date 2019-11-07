@@ -59,7 +59,3 @@ celsius2fahr <- function(cel) {
 fahr <- celsius2fahr(celsius)
 fahr
 ```
-
-# COMMENTS
-
-
