@@ -1,0 +1,73 @@
+---
+title: "DataCleaning"
+author: "Courtney Hart"
+date: "11/7/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning = F, message = F}
+library(dplyr)
+library(tidyr)
+```
+
+# Read in Data
+```{r}
+escData <- read.csv("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/urn%3Auuid%3Af119a05b-bbe7-4aea-93c6-85434dcb1c5e", stringsAsFactors = F)
+
+escGoals <- read.csv("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/knb.92014.1",
+                     stringsAsFactors = F)
+
+head(escData)
+str(escData)
+head(escGoals)
+str(escGoals)
+```
+
+
+# Escapement Data
+
+filter for BB Sockeye
+```{r}
+BBesc <- escData %>%
+  filter(SASAP.Region == "Bristol Bay") %>% 
+  filter(Species == "Sockeye") %>% 
+  separate(sampleDate, into = c("Year", "Month", "Day"), sep = "-") %>% 
+  mutate(Year=as.numeric(Year)) %>% 
+  group_by(Location, Year) %>% 
+  summarise(annaulEsc = sum(DailyCount))
+
+#unique(BBesc$Species) # allows you to check for all values
+```
+
+```{r}
+BBGoals <- escGoals %>% 
+  filter(Region == "Bristol Bay") %>% 
+  filter(Species == "Sockeye") %>% 
+  mutate(Initial.Year=as.numeric(Initial.Year)) %>% 
+  mutate(Lower=as.numeric(Lower)) %>% 
+  group_by(System) %>% 
+  rename(Location = System)
+```
+
+# Where do Escapement Goals exsit
+
+Join Table
+```{r}
+joined <- inner_join(BBGoals, BBesc, by = c("Location")) %>% 
+  filter(Type != "OEG") %>% 
+
+GoalMet <- joined %>%  
+  filter(Initial.Year <= Year) %>%
+  #filter(Lower <= annaulEsc & Upper >= annaulEsc)
+  mutate(inside = (annauEsc > Lower & annaulEsc < Upper))
+GoalMet
+```
+
+```{r}
+
+```
+
